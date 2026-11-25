@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "dsh": {
+      "command": "bun",
+      "args": ["--no-env-file", "--no-install", "${CLAUDE_PLUGIN_ROOT}/index.ts"]
+    }
+  }
+}

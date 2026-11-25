@@ -1,0 +1,6 @@
+{
+  "name": "delegate-dsh",
+  "version": "0.1.0",
+  "description": "Start a new remote DeepSeek Harness session from Claude Code.",
+  "author": {"name": "kolezka"}
+}
