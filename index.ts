@@ -3,7 +3,12 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import { start, progress } from "./dsh.ts";
 
-const server = new McpServer({ name: "delegate-dsh", version: "0.1.0" });
+import manifest from "./.claude-plugin/plugin.json";
+
+const server = new McpServer({
+  name: manifest.name,
+  version: manifest.version,
+});
 server.registerTool(
   "start",
   {

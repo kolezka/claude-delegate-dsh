@@ -9,6 +9,6 @@ export type DshJob = {
 };
 declare module "claude-code" {
   interface PluginState {
-    "dsh-tasks": { jobs: Shaped<DshJob[]> };
+    "delegate-dsh": { jobs: Shaped<DshJob[]> };
   }
 }

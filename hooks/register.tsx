@@ -2,7 +2,7 @@ import { atom, read, update } from "claude-code";
 import type { Register, EngineInterface, Timer } from "claude-code";
 import type { DshJob } from "../types";
 
-const jobs = atom({ plugin: "dsh-tasks", key: "jobs" } as const, [], {
+const jobs = atom({ plugin: "delegate-dsh", key: "jobs" } as const, [], {
   shape: "dsh-jobs-v1",
 });
 const pane = { id: "dsh-tasks", title: "DSH tasks" };

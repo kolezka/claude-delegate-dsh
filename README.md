@@ -4,12 +4,13 @@ From Claude Code, run `/delegate-dsh:start <prompt>` to queue text in a new sess
 
 ## Install from GitHub
 
-In Claude Code, install the bridge and the optional live pane:
+One plugin provides both delegation and the live pane:
 
 ```text
 /plugin install delegate-dsh --marketplace kolezka/claude-delegate-dsh
-/plugin install dsh-tasks@delegate-dsh-tools
 ```
+
+Upgrading from the two-plugin setup? Update `delegate-dsh@delegate-dsh-tools`, disable the old `dsh-tasks@delegate-dsh-tools` plugin, then restart Claude Code. Your bridge settings stay under the same plugin ID. `/dsh-tasks` remains the pane command.
 
 Configure the bridge once as described below. After a successful dispatch, the pane opens automatically. Use `/dsh-tasks` to reopen it. It checks only tasks delegated by this conversation, polling every four seconds while they are active. `stale` means the last known activity could not be refreshed, not that the task failed.
 

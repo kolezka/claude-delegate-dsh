@@ -1,7 +1,8 @@
 {
   "name": "delegate-dsh",
-  "version": "0.2.0",
-  "description": "Start a new remote DeepSeek Harness session from Claude Code.",
+  "version": "0.3.0",
+  "description": "Delegate a task to DeepSeek Harness and follow its progress in a live pane.",
+  "types": "./types/index.d.ts",
   "author": {"name": "kolezka"},
   "userConfig": {
     "origin": {"type": "string", "title": "DSH address", "description": "Your DSH HTTPS origin, such as https://machine.example.ts.net. Do not include the token.", "required": true},

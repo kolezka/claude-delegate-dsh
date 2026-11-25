@@ -1,5 +1,5 @@
 {
-  "exclude": ["panel", "node_modules"],
+  "exclude": ["hooks", "types", "tests", ".claude-plugin/types", "node_modules"],
   "compilerOptions": {
     // Environment setup & latest features
     "lib": ["ESNext"],
