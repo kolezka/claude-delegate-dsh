@@ -1,0 +1,1 @@
+{"name":"dsh-tasks","version":"0.1.0","description":"Show progress of DSH tasks delegated by this Claude conversation.","types":"./types/index.d.ts","author":{"name":"kolezka"}}

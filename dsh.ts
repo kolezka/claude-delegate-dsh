@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { summarizeProgress } from "./progress.ts";
 
 class DispatchError extends Error {}
 const response = z.object({
@@ -11,7 +12,7 @@ const response = z.object({
 });
 
 function endpoint() {
-  const url = URL.parse(process.env.DSH_URL ?? "http://127.0.0.1:3080");
+  const url = URL.parse(process.env.DSH_URL ?? "");
   if (
     !url ||
     url.username ||
@@ -26,7 +27,7 @@ function endpoint() {
     )
   ) {
     throw new DispatchError(
-      "Set DSH_URL to an HTTPS origin or a loopback HTTP origin forwarded over SSH.",
+      "Configure the DSH address in the plugin options. Use HTTPS for a remote host; plain HTTP is allowed only on loopback.",
     );
   }
   return url;
@@ -36,7 +37,7 @@ async function login(origin: URL) {
   const token = process.env.DSH_LAUNCH_TOKEN;
   if (!token)
     throw new DispatchError(
-      "Set DSH_LAUNCH_TOKEN in the environment before starting Claude.",
+      "Set the DSH launch token in the plugin's masked configuration field.",
     );
   const url = new URL("/", origin);
   url.searchParams.set("token", token);
@@ -80,6 +81,30 @@ async function rpc(
   if (!frame.success || frame.data.rpcId !== rpcId)
     throw new DispatchError("Missing or negative RPC acknowledgement.");
   return frame.data.result.value;
+}
+
+let progressCookie: string | undefined;
+export async function progress(sessionId: string) {
+  try {
+    const origin = endpoint();
+    const cookie = (progressCookie ??= await login(origin));
+    const cut = await rpc(origin, cookie, "session/projections", { sessionId });
+    const { asOfSeq } = z
+      .object({
+        kind: z.literal("sequenced"),
+        asOfSeq: z.number().int().min(-1),
+      })
+      .parse(cut);
+    const page = await rpc(origin, cookie, "session/page", {
+      address: { kind: "session", sessionId },
+      throughSeq: asOfSeq,
+      maxMessages: 2,
+    });
+    return summarizeProgress(page.records);
+  } catch {
+    progressCookie = undefined;
+    throw new Error("DSH progress unavailable.");
+  }
 }
 
 export async function start(prompt: string): Promise<string> {

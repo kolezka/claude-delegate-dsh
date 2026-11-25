@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { start } from "./dsh.ts";
+import { start, progress } from "./dsh.ts";
 
 const server = new McpServer({ name: "delegate-dsh", version: "0.1.0" });
 server.registerTool(
@@ -39,6 +39,19 @@ server.registerTool(
         ],
       };
     }
+  },
+);
+server.registerTool(
+  "progress",
+  {
+    description:
+      "Read only the last activity of a DSH session delegated by this conversation. No transcript or tool arguments are returned.",
+    inputSchema: { sessionId: z.string().regex(/^[\w.-]{1,256}$/) },
+    annotations: { readOnlyHint: true },
+  },
+  async ({ sessionId }) => {
+    const item = await progress(sessionId);
+    return { content: [{ type: "text", text: JSON.stringify(item) }] };
   },
 );
 await server.connect(new StdioServerTransport());

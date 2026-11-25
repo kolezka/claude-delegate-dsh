@@ -3,6 +3,28 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { fileURLToPath } from "node:url";
 
+test("Claude collects the endpoint and a masked token and passes them to the server", async () => {
+  const manifest = await Bun.file(
+    new URL("../.claude-plugin/plugin.json", import.meta.url),
+  ).json();
+  const config = await Bun.file(
+    new URL("../.mcp.json", import.meta.url),
+  ).json();
+  expect(manifest.userConfig?.origin).toMatchObject({
+    type: "string",
+    required: true,
+  });
+  expect(manifest.userConfig?.token).toMatchObject({
+    type: "string",
+    required: true,
+    sensitive: true,
+  });
+  expect(config.mcpServers.dsh.env).toEqual({
+    DSH_URL: "${user_config.origin}",
+    DSH_LAUNCH_TOKEN: "${user_config.token}",
+  });
+});
+
 const prompt = "Sprawdź `$(whoami)`\nbez zmian.  ";
 const entry = fileURLToPath(new URL("../index.ts", import.meta.url));
 
@@ -83,7 +105,7 @@ for (const scenario of [
         }),
       );
       expect((await client.listTools()).tools.map((t) => t.name)).toEqual([
-        "start",
+        "start", "progress",
       ]);
       const result = await client.callTool({
         name: "start",

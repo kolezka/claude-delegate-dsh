@@ -1,8 +1,9 @@
 {
   "mcpServers": {
     "dsh": {
-      "command": "bun",
-      "args": ["--no-env-file", "--no-install", "${CLAUDE_PLUGIN_ROOT}/index.ts"]
+      "command": "sh",
+      "env": {"DSH_URL": "${user_config.origin}", "DSH_LAUNCH_TOKEN": "${user_config.token}"},
+      "args": ["${CLAUDE_PLUGIN_ROOT}/server.sh"]
     }
   }
 }

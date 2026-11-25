@@ -1,6 +1,10 @@
 {
   "name": "delegate-dsh",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Start a new remote DeepSeek Harness session from Claude Code.",
-  "author": {"name": "kolezka"}
+  "author": {"name": "kolezka"},
+  "userConfig": {
+    "origin": {"type": "string", "title": "DSH address", "description": "Your DSH HTTPS origin, such as https://machine.example.ts.net. Do not include the token.", "required": true},
+    "token": {"type": "string", "title": "DSH launch token", "description": "The token from your trusted DSH launch link. Do not enter the full URL.", "required": true, "sensitive": true}
+  }
 }

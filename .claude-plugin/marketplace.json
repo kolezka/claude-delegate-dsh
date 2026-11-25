@@ -1,0 +1,6 @@
+{
+  "name": "delegate-dsh-tools",
+  "metadata": {"description": "Direct task delegation to DeepSeek Harness."},
+  "owner": {"name": "kolezka"},
+  "plugins": [{"name": "delegate-dsh", "source": "./", "description": "Delegate a prompt to a remote DSH session."}, {"name":"dsh-tasks","source":"./panel","description":"Live progress pane for the current conversation's DSH tasks."}]
+}
